@@ -4,7 +4,6 @@ require('dotenv/config');
 
 const queue = process.env.CLOUDAMQP_QUEUE;
 const exchangeAmqp = process.env.CLOUDAMQP_EXCHANGE;
-const exchangeType = process.env.CLOUDAMQP_EXCHANGETYPE;
 var amqpConn = null;
 
 class AmqpService {
@@ -67,12 +66,11 @@ function startWorker() {
             console.log('[AMQP] channel closed');
         });
 
-        ch.assertExchange(exchangeAmqp, exchangeType, { durable: true });
-        ch.bindQueue(queue, exchangeAmqp);
-
+        ch.assertExchange(exchangeAmqp, 'fanout', { durable: true });
         ch.prefetch(10);
         ch.assertQueue(queue, { durable: true }, function (err, _ok) {
             if (closeOnErr(err)) return;
+            ch.bindQueue(queue, exchangeAmqp);
             ch.consume(queue, processMsg, { noAck: false });
             console.log('Worker is started');
         });
@@ -104,7 +102,6 @@ function closeOnErr(err) {
 }
 
 var pubChannel = null;
-var offlinePubQueue = [];
 function startPublisher() {
     amqpConn.createConfirmChannel(function (err, ch) {
         if (closeOnErr(err)) return;
@@ -114,36 +111,16 @@ function startPublisher() {
         ch.on('close', function () {
             console.log('[AMQP] channel closed');
         });
-
         pubChannel = ch;
-        while (true) {
-            var m = offlinePubQueue.shift();
-            if (!m) break;
-            publish(m[0], m[1], m[2]);
-        }
     });
 }
 
 function publish(exchange, routingKey, content) {
     try {
-
-        pubChannel.assertExchange(exchange, exchangeType, { durable: true });
-
-        pubChannel.publish(
-            exchange,
-            routingKey,
-            content,
-            { persistent: true },
-            function (err, ok) {
-                if (err) {
-                    console.error('[AMQP] publish', err);
-                    offlinePubQueue.push([exchange, routingKey, content]);
-                    pubChannel.connection.close();
-                }
-            }
-        );
+        pubChannel.assertExchange(exchange, 'fanout', { durable: true });
+        pubChannel.assertQueue(routingKey);
+        pubChannel.publish(exchange, routingKey, content, { persistent: true });
     } catch (e) {
         console.error('[AMQP] publish', e.message);
-        offlinePubQueue.push([exchange, routingKey, content]);
     }
 }
