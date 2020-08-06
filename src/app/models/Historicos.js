@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 
 const HistoricoSchema = new mongoose.Schema({
-  id: {
+  droneId: {
     type: String,
     required: true,
   },
-  temperatura: {
+  name: {
+    type: String,
+    required: true,
+  },
+  temperature: {
     type: Number,
     required: true,
   },
-  umidade: {
+  humidity: {
     type: Number,
     required: true,
   },
@@ -25,6 +29,14 @@ const HistoricoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  tracking: {
+    type: Boolean,
+    required: true,
+  },
+  createdAtDrone: {
+    type: Date,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model('Historico', HistoricoSchema);

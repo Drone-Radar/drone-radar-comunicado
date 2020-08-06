@@ -39,19 +39,7 @@ class AmqpService {
 module.exports = new AmqpService();
 
 function whenConnected() {
-    startPublisher();
     startWorker();
-
-    setInterval(function () {
-        var historico = {
-            id: 'drone1',
-            temperatura: 10,
-            umidade: 40,
-            latitude: 10,
-            longitude: 10,
-        };
-        publish(exchangeAmqp, queue, new Buffer.from(JSON.stringify(historico)));
-    }, 1000);
 }
 
 // A worker that acks messages only if processed succesfully
@@ -78,7 +66,11 @@ function startWorker() {
         function processMsg(msg) {
             work(msg, async function (ok) {
                 try {
-                    //await historicoService.createHistorico(JSON.parse(msg.content.toString()));
+                    var lstDrones = JSON.parse(msg.content.toString());
+                    if (lstDrones) {
+                        await historicoService.createHistoricoFromDroneList(lstDrones);
+                        console.log('Gravando histórico.');
+                    }
                     if (ok) ch.ack(msg);
                     else ch.reject(msg, true);
                 } catch (e) {
@@ -90,7 +82,7 @@ function startWorker() {
 }
 
 function work(msg, cb) {
-    console.log('Got msg ', msg.content.toString());
+    //console.log('Got msg ', msg.content.toString());
     cb(true);
 }
 
@@ -99,28 +91,4 @@ function closeOnErr(err) {
     console.error('[AMQP] error', err);
     amqpConn.close();
     return true;
-}
-
-var pubChannel = null;
-function startPublisher() {
-    amqpConn.createConfirmChannel(function (err, ch) {
-        if (closeOnErr(err)) return;
-        ch.on('error', function (err) {
-            console.error('[AMQP] channel error', err.message);
-        });
-        ch.on('close', function () {
-            console.log('[AMQP] channel closed');
-        });
-        pubChannel = ch;
-    });
-}
-
-function publish(exchange, routingKey, content) {
-    try {
-        pubChannel.assertExchange(exchange, 'fanout', { durable: true });
-        pubChannel.assertQueue(routingKey);
-        pubChannel.publish(exchange, routingKey, content, { persistent: true });
-    } catch (e) {
-        console.error('[AMQP] publish', e.message);
-    }
 }
