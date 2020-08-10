@@ -25,7 +25,7 @@ class MailerService {
         'Latitude: ' + data[key].latitude + ' | ' + 
         'Temperatura: ' + data[key].temperature + ' | ' + 
         'Umidade: ' + data[key].humidity + ' | ' + 
-        'Criado em: ' + data[key].createdAt + '\n'; 
+        'Criado em: ' + new Date(data[key].createdAt).toISOString() + '\n'; 
       }
 
       return text;

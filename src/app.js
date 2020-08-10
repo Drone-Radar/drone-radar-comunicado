@@ -18,7 +18,7 @@ class AppController {
 
     amqpService.start();
 
-    setInterval(validateData, 10000);
+    setInterval(validateData, 60000);
 
     return app;
   }
