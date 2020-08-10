@@ -21,7 +21,8 @@ class MailerService {
       var text = 'Drone: ' + data[0].name + '\n';
 
       for (var key in data) {
-        text += 
+        text += 'Longitude: ' + data[key].longitude + ' | ' + 
+        'Latitude: ' + data[key].latitude + ' | ' + 
         'Temperatura: ' + data[key].temperature + ' | ' + 
         'Umidade: ' + data[key].humidity + ' | ' + 
         'Criado em: ' + data[key].createdAt + '\n'; 

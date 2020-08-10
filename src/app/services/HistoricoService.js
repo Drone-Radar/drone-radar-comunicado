@@ -43,7 +43,7 @@ class HistoricoService {
                 $lte: now,
               },
             },
-            'name temperature humidity createdAt'
+            'name latitude longitude temperature humidity createdAt'
           )
           .limit(10);
         if (result == '' || result == null) {
