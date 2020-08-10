@@ -11,6 +11,10 @@ Alterações:
 
 Acessando Mailtrap.io:
 
+O Mailtrap fornece um servidor SMTP falso para sua equipe de desenvolvimento testar, visualizar e compartilhar e-mails enviados dos ambientes de pré-produção e testar com dados reais sem o risco de spam de clientes reais. É criado pela Railsware e para muitas tarefas de desenvolvimento, o uso do Mailtrap será gratuito.
+
+Essencialmente, você se inscreve no Mailtrap e envia todo o seu e-mail de ambiente de pré-produção através do seu servidor Falso Mailtrap SMTP.
+
 **URL: https://mailtrap.io/**
 * Crie o Cadastro (Possível utilizar o Github);
 * Após o login crie uma inbox com o nome: drones;
