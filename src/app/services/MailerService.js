@@ -17,14 +17,26 @@ class MailerService {
     var $user = 'Drones';
     var $destinatario = process.env.DESTINATARIO;
 
-    const
+    var iterateData = function(data) {
+      var text = 'Drone: ' + data[0].name + '\n';
+
+      for (var key in data) {
+        text += 
+        'Temperatura: ' + data[key].temperature + ' | ' + 
+        'Umidade: ' + data[key].humidity + ' | ' + 
+        'Criado em: ' + data[key].createdAt + '\n'; 
+      }
+
+      return text;
+    };
 
     var mailOptions = {
       from: $user,
       to: $destinatario,
       subject: '[Resultado] - Validação de Dados',
-      text: 'Resultados Validados: ' + '\n' + JSON.stringify(filteredResult),
+      text: iterateData(filteredResult),
     };
+
     console.log(mailOptions);
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
