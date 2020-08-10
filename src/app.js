@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const requireDir = require('require-dir');
@@ -6,30 +6,29 @@ const amqpService = require('./app/services/AmqpService');
 const { validateData } = require('./app/services/HistoricoService');
 
 class AppController {
-	constructor() {
+  constructor() {
+    const app = express();
+    app.use(express.json());
+    app.use(cors());
 
-		const app = express()
-		app.use(express.json())
-		app.use(cors());
+    require('dotenv/config');
 
-		require('dotenv/config');
+    this.database();
+    requireDir('./app/models');
 
-		this.database()
-		requireDir('./app/models');
+    amqpService.start();
 
-		amqpService.start();
+    setInterval(validateData, 10000);
 
-		setInterval(validateData, (60000));
+    return app;
+  }
 
-		return app;
-	}
-
-	database() {
-		mongoose.connect(process.env.MONGODB_CONNECTIONSTRING, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true
-		});
-	}
+  database() {
+    mongoose.connect(process.env.MONGODB_CONNECTIONSTRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  }
 }
 
-module.exports = new AppController()
+module.exports = new AppController();
