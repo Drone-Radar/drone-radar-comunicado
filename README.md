@@ -1,4 +1,34 @@
-# Nodemailer
+# Execução do Projeto Completo 
+
+## `Back-End`
+
+### Requirementos
+```
+node, npm
+```
+
+### Instalação e  Execução
+git clone https://github.com/Drone-Radar/drone-api <p>
+npm install <p>
+npm start <p>
+acessar http://localhost:3333/ <p> 
+
+
+## `Front-End`
+
+### Requirementos
+```
+node, npm
+```
+
+### Instalação e  Execução
+git clone https://github.com/Drone-Radar/drone-radar <p>
+npm install <p>
+npm start <p>
+acessar http://localhost:3000/ <p> 
+** executar com o front executando em paralelo ** 
+
+## `Execução das Notificações`
 
 Comandos:
 * npm install nodemon
