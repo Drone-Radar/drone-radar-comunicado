@@ -12,6 +12,13 @@ git clone https://github.com/Drone-Radar/drone-api <p>
 npm install <p>
 npm start <p>
 acessar http://localhost:3333/ <p> 
+  
+### Validação da Fila (RabbitMQ)
+Foi criada as chaves no .env do projeto (necessário configuração prórpia) <p> 
+CLOUDAMQP_URL=amqp://rjzblehl:4iOzb8P7ZU1noxGZ9LM2S4IEvYNTuWJn@orangutan.rmq.cloudamqp.com/rjzblehl <p> 
+CLOUDAMQP_HEARTBEAT=60 <p>
+CLOUDAMQP_EXCHANGE=drone <p> 
+CLOUDAMQP_QUEUE=comunicado <p>
 
 
 ## `Front-End`
