@@ -33,7 +33,7 @@ git clone https://github.com/Drone-Radar/drone-radar <p>
 npm install <p>
 npm start <p>
 acessar http://localhost:3000/ <p> 
-** executar com o front executando em paralelo ** 
+** executar com o back-end executando em paralelo ** 
 
 ## `Execução das Notificações`
 
