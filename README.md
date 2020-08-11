@@ -48,10 +48,14 @@ Essencialmente, você se inscreve no Mailtrap e envia todo o seu e-mail de ambie
 * Após o login crie uma inbox com o nome: drones;
 * Ao acessar a inbox terá na tela principal as credenciais, se atente apenas na questão de usuário e senha e altere o arquivo **.env**
 
-Run:
+## Run:
+```
+npm run 
+```
 
-* **npm run dev (drones-api)**
-* **npm run dev (drone-radar-comunicado)** - No arquivo **app.js** existirá o método **setInterval(validateData, (60000));** responsável pela execução de toda a atividade.
+** Executar com o Back-End executando em paralelo ** 
+- No arquivo **app.js** existirá o método **setInterval(validateData, (60000));** responsável pela execução de toda a atividade.
+
 
 Caso utilize o projeto UI, segue a sugestão de dados para teste da aplicação:
 
